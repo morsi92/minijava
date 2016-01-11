@@ -1,0 +1,103 @@
+### Starting build.
+# Target: Main/Main.ml.depends, tags: { extension:ml, file:Main/Main.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Main/Main.ml > Main/Main.ml.depends # cached
+# Target: Main/Compile.ml.depends, tags: { extension:ml, file:Main/Compile.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Main/Compile.ml > Main/Compile.ml.depends # cached
+# Target: Parsing/Hight_level.mll, tags: { extension:mll, file:Parsing/Hight_level.mll, lexer, ocaml, ocamllex, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamllex -q Parsing/Hight_level.mll # cached
+# Target: Parsing/Hight_level.ml.depends, tags: { extension:ml, file:Parsing/Hight_level.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Parsing/Hight_level.ml > Parsing/Hight_level.ml.depends # cached
+# Target: Parsing/parser.mly.depends, tags: { extension:mly, file:Parsing/parser.mly, menhir_ocamldep, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+menhir --raw-depend --ocamldep '/usr/bin/ocamldep -modules' Parsing/parser.mly > Parsing/parser.mly.depends
++ menhir --raw-depend --ocamldep '/usr/bin/ocamldep -modules' Parsing/parser.mly > Parsing/parser.mly.depends
+File "Parsing/parser.mly", line 27, characters 52-54:
+Warning: the token AT is unused.
+File "Parsing/parser.mly", line 30, characters 7-20:
+Warning: the token CLOSE_COMMENT is unused.
+File "Parsing/parser.mly", line 28, characters 7-19:
+Warning: the token COMMENT_LINE is unused.
+File "Parsing/parser.mly", line 23, characters 41-48:
+Warning: the token DEFAULT is unused.
+File "Parsing/parser.mly", line 27, characters 60-65:
+Warning: the token EQUAL is unused.
+File "Parsing/parser.mly", line 27, characters 55-59:
+Warning: the token MARK is unused.
+File "Parsing/parser.mly", line 32, characters 27-33:
+Warning: the token NATIVE is unused.
+File "Parsing/parser.mly", line 29, characters 7-19:
+Warning: the token OPEN_COMMENT is unused.
+File "Parsing/parser.mly", line 27, characters 17-22:
+Warning: the token POINT is unused.
+File "Parsing/parser.mly", line 33, characters 7-13:
+Warning: the token RETURN is unused.
+File "Parsing/parser.mly", line 32, characters 14-26:
+Warning: the token SYNCHRONIZED is unused.
+# Target: Main/Exceptions.ml.depends, tags: { extension:ml, file:Main/Exceptions.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Main/Exceptions.ml > Main/Exceptions.ml.depends # cached
+# Target: Main/Exceptions.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Main/Exceptions.cmo, file:Main/Exceptions.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Main -I Utils -I Evaluator -I Compiling -I Typing -I Parsing -o Main/Exceptions.cmo Main/Exceptions.ml # cached
+# Target: Utils/Location.mli.depends, tags: { extension:mli, file:Utils/Location.mli, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Utils/Location.mli > Utils/Location.mli.depends # cached
+# Target: Utils/Location.cmi, tags: { byte, compile, extension:mli, file:Utils/Location.mli, interf, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Utils -I Main -I Evaluator -I Compiling -I Typing -I Parsing -o Utils/Location.cmi Utils/Location.mli # cached
+# Target: Parsing/syn.ml.depends, tags: { extension:ml, file:Parsing/syn.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Parsing/syn.ml > Parsing/syn.ml.depends # cached
+# Target: Parsing/syn.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Parsing/syn.cmo, file:Parsing/syn.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Parsing -I Utils -I Main -I Evaluator -I Compiling -I Typing -o Parsing/syn.cmo Parsing/syn.ml # cached
+# Target: Parsing/parser.mly, tags: { byte, compile, extension:mly, file:Parsing/parser.mly, menhir, ocaml, parser, quiet, traverse, use_menhir, warn_a }
+menhir --ocamlc '/usr/bin/ocamlc -w a -I Parsing -I Utils -I Main -I Evaluator -I Compiling -I Typing' --infer Parsing/parser.mly
++ menhir --ocamlc '/usr/bin/ocamlc -w a -I Parsing -I Utils -I Main -I Evaluator -I Compiling -I Typing' --infer Parsing/parser.mly
+File "Parsing/parser.mly", line 27, characters 52-54:
+Warning: the token AT is unused.
+File "Parsing/parser.mly", line 30, characters 7-20:
+Warning: the token CLOSE_COMMENT is unused.
+File "Parsing/parser.mly", line 28, characters 7-19:
+Warning: the token COMMENT_LINE is unused.
+File "Parsing/parser.mly", line 23, characters 41-48:
+Warning: the token DEFAULT is unused.
+File "Parsing/parser.mly", line 27, characters 60-65:
+Warning: the token EQUAL is unused.
+File "Parsing/parser.mly", line 27, characters 55-59:
+Warning: the token MARK is unused.
+File "Parsing/parser.mly", line 32, characters 27-33:
+Warning: the token NATIVE is unused.
+File "Parsing/parser.mly", line 29, characters 7-19:
+Warning: the token OPEN_COMMENT is unused.
+File "Parsing/parser.mly", line 27, characters 17-22:
+Warning: the token POINT is unused.
+File "Parsing/parser.mly", line 33, characters 7-13:
+Warning: the token RETURN is unused.
+File "Parsing/parser.mly", line 32, characters 14-26:
+Warning: the token SYNCHRONIZED is unused.
+Warning: 5 states have shift/reduce conflicts.
+Warning: 4 states have reduce/reduce conflicts.
+Warning: 30 shift/reduce conflicts were arbitrarily resolved.
+Warning: 23 reduce/reduce conflicts were arbitrarily resolved.
+File "Parsing/parser.mly", line 60, characters 3-30:
+Warning: production header_import -> IMPORT path SEMICOLON is never reduced.
+File "Parsing/parser.mly", line 91, characters 2-26:
+Warning: production modifier_class_toplevel -> modifier_class is never reduced.
+File "Parsing/parser.mly", line 143, characters 2-30:
+Warning: production modifiers_attribute -> modifier_attribute is never reduced.
+Warning: in total, 3 productions are never reduced.
+# Target: Parsing/parser.mli.depends, tags: { extension:mli, file:Parsing/parser.mli, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Parsing/parser.mli > Parsing/parser.mli.depends
+# Target: Parsing/parser.cmi, tags: { byte, compile, extension:mli, file:Parsing/parser.mli, interf, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Parsing -I Utils -I Main -I Evaluator -I Compiling -I Typing -o Parsing/parser.cmi Parsing/parser.mli
+# Target: Parsing/Hight_level.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Parsing/Hight_level.cmo, file:Parsing/Hight_level.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Parsing -I Utils -I Main -I Evaluator -I Compiling -I Typing -o Parsing/Hight_level.cmo Parsing/Hight_level.ml # cached
+# Target: Main/Compile.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Main/Compile.cmo, file:Main/Compile.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Main -I Utils -I Evaluator -I Compiling -I Typing -I Parsing -o Main/Compile.cmo Main/Compile.ml # cached
+# Target: Main/Main.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Main/Main.cmo, file:Main/Main.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Main -I Utils -I Evaluator -I Compiling -I Typing -I Parsing -o Main/Main.cmo Main/Main.ml # cached
+# Target: Utils/Location.ml.depends, tags: { extension:ml, file:Utils/Location.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Utils/Location.ml > Utils/Location.ml.depends # cached
+# Target: Utils/Location.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Utils/Location.cmo, file:Utils/Location.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Utils -I Main -I Evaluator -I Compiling -I Typing -I Parsing -o Utils/Location.cmo Utils/Location.ml # cached
+# Target: Parsing/parser.ml.depends, tags: { extension:ml, file:Parsing/parser.ml, ocaml, ocamldep, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamldep -modules Parsing/parser.ml > Parsing/parser.ml.depends
+# Target: Parsing/parser.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Parsing/parser.cmo, file:Parsing/parser.ml, implem, ocaml, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc -c -w a -I Parsing -I Utils -I Main -I Evaluator -I Compiling -I Typing -o Parsing/parser.cmo Parsing/parser.ml
+# Target: Main/Main.byte, tags: { byte, dont_link_with, extension:byte, file:Main/Main.byte, link, ocaml, program, quiet, traverse, use_menhir, warn_a }
+/usr/bin/ocamlc Main/Exceptions.cmo Parsing/syn.cmo Utils/Location.cmo Parsing/parser.cmo Parsing/Hight_level.cmo Main/Compile.cmo Main/Main.cmo -o Main/Main.byte
+# Compilation successful.

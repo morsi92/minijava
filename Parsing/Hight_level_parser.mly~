@@ -1,0 +1,132 @@
+%{
+  (*calling Syntax module*)
+  open Syntax
+%}
+
+%token LEFT_BRACKET RIGHT_BRACKET
+%token LEFT_BRACE RIGHT_BRACE
+%token PUBLIC PRIVATE PROTECTED STRICTFP DEFAULT VOLATILE TRANSIENT
+%token INTERFACE CLASS
+%token IMPLEMENTS EXTENDS THROWS NATIVE
+%token IMPORT PACKAGE
+%token SEMICOLON POINT COMMA LEFT_DIPLE RIGHT_DIPLE AT MARK EQUAL
+%token COMMENT_LINE
+%token OPEN_COMMENT
+%token CLOSE_COMMENT
+%token ABSTRACT FINAL
+%token STATIC SYNCHRONIZED
+%token RETURN
+%token <int> INT
+%token <string> LIDENT UIDENT STRING PATH
+%token <float> FLOAT
+%token <bool> BOOL
+%token <unit> VOID
+
+%start expression
+%type < Syntax.expression > expression
+
+(*left ..*)
+
+%%
+
+(*
+    We consider that the source code is devided into two main parts :
+    header : contains package and import declaration
+    a suit of Java calss and interface declarations
+    In this Part we are writing the "semantic" grammar of all the java language
+*)
+(*
+    Annotation could be added before entity declarations (Class,Method,Methods,attribute)
+*)
+
+
+expression :
+  |(*prog vide*)
+  | h=header ((annot? dec_class_topLevel) | (annot? dec_interface) | (annot? dec_annot))* EOF {h}
+
+(*
+- header part may contains at most one package declaration
+and several import declarations
+- we distinguish top level class from a member class
+*)
+header :
+  | header_package? header_import*
+
+header_package :
+  | PACKAGE (UIDENT|LIDENT) SEMICOLON
+
+header_import :
+  | IMPORT PATH SEMICOLON
+
+annot :
+  | AT UIDENT
+  | AT UIDENT LEFT_BRACKET MARK STRING MARK RIGHT_BRACKET
+  | AT UIDENT LEFT_BRACKET (UIDENT EQUAL MARK STRING MARK) (COMMA UIDENT EQUAL MARK STRING MARK)* RIGHT_BRACKET
+  (*@Example (b="0",r="1")*)
+
+dec_annot
+  | PUBLIC? AT INTERFACE UIDENT LEFT_BRACE STRING RIGHT_BRACE (*TODO*)
+
+(*
+- top level class could have a public modifier or nothing
+- top level class could be a generic class
+*)
+
+dec_class_topLevel :
+  | PUBLIC ? STRICTFP? FINAL? CLASS UIDENT ext? impl? LEFT_BRACE  (class_body) RIGHT_BRACE
+  | PUBLIC ? STRICTFP? FINAL? CLASS UIDENT LEFT_DIPLE UIDENT RIGHT_DIPLE ext? impl? LEFT_BRACE (class_body) RIGHT_BRACE
+  (*generic class*)
+
+dec_interface :
+  | PUBLIC? STRICTFP? INTERFACE UIDENT (EXTENDS UIDENT (COMMA UIDENT)* )? LEFT_BRACE dec_method_empty* RIGHT_BRACE
+
+class_body :
+  | dec_attribute* dec_class* dec_method* dec_interface*
+
+
+dec_class :
+  | modifier CLASS UIDENT ext? impl? LEFT_BRACE  (dec_attribute|dec_method)* RIGHT_BRACE
+  | (PUBLIC|PRIVATE)? STRICTFP? ABSTRACT CLASS UIDENT ext? impl? LEFT_BRACE  (dec_attribute|dec_method)*dec_method_abstract(dec_attribute|dec_method|dec_method_abstract)* RIGHT_BRACE
+    (*abstract class has at least an abstract method*)
+  | modifier CLASS UIDENT LEFT_DIPLE UIDENT RIGHT_DIPLE ext? impl? LEFT_BRACE (class_body) RIGHT_BRACE
+  | (PUBLIC|PRIVATE)? STRICTFP? ABSTRACT CLASS UIDENT LEFT_DIPLE UIDENT RIGHT_DIPLE ext? impl? LEFT_BRACE (class_body) RIGHT_BRACE
+  (*generic class + cas if it is abstract*)
+
+modifier_class :
+  | (PUBLIC|PRIVATE)? STRICTFP? FINAL?
+
+ext :
+  | EXTENDS UIDENT
+
+impl :
+  | IMPLEMENTS UIDENT (COMMA UIDENT)*
+
+dec_attribute :
+  | (PUBLIC|PRIVATE|PROTECTED)? (STATIC | FINAL)? VOLATILE? TRANSIENT? UIDENT LIDENT STRING SEMICOLON (*TODO*)
+
+dec_method :
+  | modifier_method UIDENT LIDENT LEFT_BRACKET param? RIGHT_BRACKET thro? LEFT_BRACE expr RIGHT_BRACE
+  | PUBLIC UIDENT LEFT_BRACKET param? RIGHT_BRACKET thro? LEFT_BRACE expr RIGHT_BRACE
+  (* this rule if for class construcors*)
+
+modifier_method :
+  | (PUBLIC|PRIVATE|PROTECTED)? (FINAL|STATIC|DEFAULT)? (STRICTFP|NATIVE)? SYNCHRONIZED?
+  | (PUBLIC|PROTECTED)? ABSTRACT
+  (*abstract modifier can not be used with any other modifier*)
+
+dec_method_empty :
+  | PUBLIC? (ABSTRACT|STATIC|DEFAULT)? UIDENT LIDENT LEFT_BRACKET param? RIGHT_BRACKET thro? SEMICOLON
+
+
+dec_method_abstract :
+  | (PUBLIC|PROTECTED)? ABSTRACT UIDENT LIDENT LEFT_BRACKET param? RIGHT_BRACKET thro? SEMICOLON
+
+thro :
+  | THROWS UIDENT (COMMA UIDENT)*
+
+param :
+  | UIDENT LIDENT (COMMA UIDENT LIDENT)*
+
+
+
+%%

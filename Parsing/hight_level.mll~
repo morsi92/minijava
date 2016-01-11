@@ -1,0 +1,62 @@
+{
+    type lexeme =
+        |CLASS
+        |IDENT of string
+        |LEFT_BRACE
+        |RIGHT_BRACE
+        |LEFT_BRACKET
+        |RIGHT_BRACKET
+        |SEMICOLON
+        |POINT
+        |INTERFACE
+        |PUBLIC
+        |STATIC
+        |PROTECTED
+        |PRIVATE
+        |ABSTRACT
+        |EXTENDS
+        |IMPLEMENTS
+        |IMPORT
+        |PACKAGE
+        |FINAL
+        |THROWS
+        |EOF
+        |COMMENT_LINE
+        |OPEN_COMMENT
+        |CLOSE_COMMENT
+
+}
+
+let letter = ['a'-'z' 'A'-'Z']
+let digit = ['0'-'9']
+let ident = letter(letter|digit|'_')*
+let space = [' ' '\t']
+let newline = ['\n' '\r']
+
+rule token = parse
+    |space+ { token lexbuf }
+    |newline+ { token lexbuf } (* Temp set like this *)
+    |ident as str { IDENT str }
+    |"import" {IMPORT}
+    |"package" {PACKAGE}
+    |"{" {LEFT_BRACE}
+    |"}" {RIGHT_BRACE}
+    |"(" {LEFT_BRACKET}
+    |")" {RIGHT_BRACKET}
+    |";" {SEMICOLON}
+    |"." {POINT}
+    |"//" {COMMENT_LINE}
+    |"/*" {OPEN_COMMENT}
+    |"*/" {CLOSE_COMMENT}
+    |"abstract" {ABSTRACT}
+    |"final" {FINAL}
+    |"static" {STATIC}
+    |"public" {PUBLIC}
+    |"protected" {PROTECTED}
+    |"private" {PRIVATE}
+    |"class" {CLASS}
+    |"interface" {INTERFACE}
+    |"implements" {IMPLEMENTS}
+    |"extends" {EXTENDS}
+    |"throws" {THROWS}
+    |eof {EOF}
