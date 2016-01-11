@@ -3,22 +3,29 @@
 	open Syn
 	open Exceptions
 
-	let rec getAttributes = function 
+(*create two functions who get as a list of Attribute and Methods and create as an output :
+	- a list of attributes (extracted from the input list
+	- a list of Methods (extracted from the input list
+	*)
+
+	let rec getAttributes = function
 	| [] -> []
 	| (Attribute a)::t -> a::(getAttributes t)
 	| h::t -> getAttributes t
 
-	let rec getMethods = function 
+	let rec getMethods = function
 	| [] -> []
 	| (Method a)::t -> a::(getMethods t)
 	| h::t -> getMethods t
 %}
 
+(* Tokens expected from the High Level lexer*)
+
 %token LEFT_BRACKET RIGHT_BRACKET
 %token LEFT_BRACE RIGHT_BRACE
 %token PUBLIC PRIVATE PROTECTED STRICTFP DEFAULT VOLATILE TRANSIENT
 %token INTERFACE CLASS ENUM
-%token IMPLEMENTS EXTENDS THROWS 
+%token IMPLEMENTS EXTENDS THROWS
 %token IMPORT PACKAGE
 %token SEMICOLON POINT COMMA LEFT_DIPLE RIGHT_DIPLE AT MARK EQUAL
 %token COMMENT_LINE
@@ -41,27 +48,33 @@
 
 %%
 
+(*
+    We consider that the source code is devided into two main parts :
+    header : contains at most one package and several import declarations
+		(the package declaration if existed should precede import declarations if existed)
+    a suit of Java calss and interface declarations
+*)
 code_source :
-	|header=header_package dc=body* EOF {header;dc} 
+	|header=header_package dc=body* EOF {header;dc}
 	|error {Location.print (Location.symbol_loc $startpos $endpos); raise Exceptions.SyntaxError}
 
 header_package :
 	|header=header_import {Header{header=header}} (* *)
 	|PACKAGE path=path SEMICOLON {Header{header=[{name="package";path=path}]}}
 	|PACKAGE path=path SEMICOLON header=header_import {Header{header={name="package";path=path}::header}}
-	
+
 
 header_import :
-	|{[]} 
+	|{[]}
 	| IMPORT path=path SEMICOLON {[{name="import";path=path}]}
 	| IMPORT path=path SEMICOLON hi=header_import {{name="import";path=path}::hi}
 
-	
+
 path :
 	|ident=IDENT {ident}
 	|path=PATH {path}
 body :
-	|(*an=annot*) dc=dec_class {dc} 
+	|(*an=annot*) dc=dec_class {dc}
 	|(*an=annot*) di=dec_interface {di}
 	|(*an=annot*) de=dec_enum {de}
 	(*|(*annot?*) (*dec_annot*)*)
@@ -88,12 +101,12 @@ modifier_class:
 	|STRICTFP {"strictfp"}
 	|FINAL {"final"}
 	|ABSTRACT {"abstract"}
-	
+
 dec_interface:
 	|INTERFACE name=IDENT generic=generic  LEFT_BRACE RIGHT_BRACE {Interface{name=name;interfaces=[];generic=generic}}
 	|INTERFACE name=IDENT generic=generic IMPLEMENTS interfaces=interfaces LEFT_BRACE RIGHT_BRACE {Interface{name=name;interfaces= interfaces;generic=generic}}
 
-interfaces :	
+interfaces :
 	|i=IDENT {[i]}
 	|i=IDENT COMMA interfaces=interfaces {i::interfaces}
 generic :
@@ -113,7 +126,7 @@ abstract_modifiers:
 	|PUBLIC ABSTRACT {["public";"abstract"]}
 exceptions:
 	|e=IDENT {[e]}
-	|e=IDENT COMMA exceptions=exceptions {e::exceptions}	
+	|e=IDENT COMMA exceptions=exceptions {e::exceptions}
 modifiers_attribute:
 	|{[]}
 	|modifier=modifier_attribute {[modifier]}
@@ -145,7 +158,7 @@ modifier_attribute :
 parameters:
 	|{[]}
 	|parameters=parameters_filled {parameters}
-parameters_filled:	
+parameters_filled:
 	|_type=what_type name=IDENT {[{_type=_type;name=name}]}
 	|_type=what_type name=IDENT COMMA parameters=parameters {{_type=_type;name=name}::parameters}
 
